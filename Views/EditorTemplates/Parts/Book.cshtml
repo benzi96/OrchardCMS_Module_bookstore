@@ -1,0 +1,33 @@
+﻿@using System.Web.Mvc.Html
+@model bookstore.Models.BookPart
+<fieldset>
+    <legend>Book Fields</legend>
+ 
+    <div class="editor-label">@Html.LabelFor(x => x.Sku)</div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Sku)
+        @Html.ValidationMessageFor(x => x.Sku)
+    </div>
+    <div class="hint">Enter the Stock Keeping Unit</div>
+ 
+    <div class="editor-label">@Html.LabelFor(x => x.UnitPrice)</div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.UnitPrice)
+        @Html.ValidationMessageFor(x => x.UnitPrice)
+    </div>
+    <div class="hint">Enter the sales price per unit</div>
+
+    <div class="editor-label">@Html.LabelFor(x => x.Arthor)</div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Arthor)
+        @Html.ValidationMessageFor(x => x.Arthor)
+    </div>
+    <div class="hint">Enter the book's arthor name</div>
+
+    <div class="editor-label">@Html.LabelFor(x => x.Language)</div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Language)
+        @Html.ValidationMessageFor(x => x.Language)
+    </div>
+    <div class="hint">Enter the language of this book </div>
+</fieldset>

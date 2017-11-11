@@ -1,0 +1,9 @@
+﻿Name: bookstore
+AntiForgery: enabled
+Author: nhom 3 khanh-hao-khon
+Website: http://orchardproject.net
+Version: 1.10.2
+OrchardVersion: 1.9
+Description: bookstore
+FeatureDescription: sell books to the one who want to buy books.
+Category: A

@@ -1,0 +1,27 @@
+﻿@model IList<bookstore.Models.AddressPart>
+@{
+    Layout.Title = T("Addresses");
+}
+
+<table class="items" summary="@T("This is a table of the addresses of the current customer in your application")">
+    <colgroup>
+        <col id="Col1" />
+        <col id="Col2" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">&nbsp;&darr;</th>
+            <th scope="col">@T("Actions")</th>
+        </tr>
+    </thead>
+    @foreach (var address in Model) {
+    <tr>
+        <td>@address.Id</td>
+        <td>
+            <div>
+                <a href="@Url.Action("Detail", "AddressAdmin", new {id = address.CustomerId})" title="@T("Detail")">@T("Detail")</a>
+            </div>
+        </td>
+    </tr>
+    } 
+</table>

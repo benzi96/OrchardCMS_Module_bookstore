@@ -1,0 +1,75 @@
+﻿@using bookstore.Models
+@{
+    Style.Require("bookstore.ShoppingCart");
+    Script.Require("bookstore.ShoppingCart").AtHead();
+    var items = (IList<dynamic>)Model.Books;
+    var subtotal = (decimal)Model.Subtotal;
+    var vat = (decimal)Model.Vat;
+    var total = (decimal)Model.Total;
+}
+<article class="shoppingcart">
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Update", "ShoppingCart", new { area = "bookstore" })))
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td>Article</td>
+                    <td class="numeric">Unit Price</td>
+                    <td class="numeric">Quantity</td>
+                    <td class="numeric">Total Price</td>
+                    <td class="action"></td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < items.Count; i++)
+                {
+                    var item = items[i];
+                    var book = (BookPart)item.BookPart;
+                    var title = item.Title ?? "(no routepart attached)";
+                    var quantity = (int)item.Quantity;
+                    var unitPrice = book.UnitPrice;
+                    var totalPrice = quantity * unitPrice;
+                    <tr>
+                        <td>@title</td>
+                        <td class="numeric">@unitPrice.ToString("c")</td>
+                        <td class="numeric">
+                            <input name="@string.Format("items[{0}].BookId", i)" type="hidden" value="@book.Id" />
+                            <input name="@string.Format("items[{0}].IsRemoved", i)" type="hidden" value="false" />
+                            <input name="@string.Format("items[{0}].Quantity", i)" type="number" value="@quantity" />
+                        </td>
+                        <td class="numeric">@totalPrice.ToString("c")</td>
+                        <td class="action"><a class="icon delete" href="#"></a></td>
+                    </tr>
+                }
+
+            </tbody>
+            <tfoot>
+                <tr><td colspan="5">&nbsp;</td></tr>
+                <tr class="separator">
+                    <td class="update" colspan="5"><button name="command" value="Update" type="submit">Update</button></td>
+                </tr>
+                <tr>
+                    <td class="numeric label" colspan="3">Subtotal:</td>
+                    <td class="numeric">@subtotal.ToString("c")</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="numeric label" colspan="3">VAT (19%):</td>
+                    <td class="numeric">@vat.ToString("c")</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="numeric label" colspan="3">Total:</td>
+                    <td class="numeric">@total.ToString("c")</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <footer>
+            <div class="group">
+                <div class="align left"><button type="submit" name="command" value="ContinueShopping">Continue shopping</button></div>
+                <div class="align right"><button type="submit" name="command" value="Checkout">Proceed to checkout</button></div>
+            </div>
+        </footer>
+    }
+</article>

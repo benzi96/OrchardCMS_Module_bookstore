@@ -1,0 +1,6 @@
+﻿.navicon-bookshop {
+background-image:url('../image/menu.bookshop.png') !important;
+}
+.navicon-bookshop:hover {
+background-position:0 -30px !important;
+}

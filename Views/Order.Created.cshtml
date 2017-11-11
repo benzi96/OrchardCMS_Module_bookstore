@@ -1,0 +1,79 @@
+﻿@using System.Globalization
+@using Orchard.ContentManagement
+@using bookstore.Models
+@{
+    Style.Require("bookstore.Order");
+
+    var order = (OrderRecord) Model.Order;
+    var bookParts = (IList<BookPart>) Model.Books;
+    var billingAddress = Model.BillingAddress;
+}
+<h2>@T("Order {0} has been created", order.Number())</h2>
+<p>@T("Please find your order details below")</p>
+
+<div class="order-wrapper">
+    <article class="order">
+        <header>
+            <ul>
+                <li>
+                    <div class="field-label">Order Number</div>
+                    <div class="field-value">@order.Number()</div>
+                </li>
+                <li>
+                    <div class="field-label">Created</div>
+                    <div class="field-value">@order.CreatedAt.ToString(CultureInfo.InvariantCulture)</div>
+                </li>
+            </ul>
+        </header>
+        <table>
+            <thead>
+                <tr>
+                    <td>Article</td>
+                    <td class="numeric">Unit Price</td>
+                    <td class="numeric">Quantity</td>
+                    <td class="numeric">Total Price</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in order.Details) {
+                    var bookPart = bookParts.Single(x => x.Id == detail.BookId);
+                    var book = (dynamic)bookParts.Single(x => x.Id == detail.BookId);
+                    var bookTitle = book.TitlePart != null ? book.TitlePart.Title : "(no TitlePart attached)";
+                    <tr>
+                        <td>@bookTitle</td>
+                        <td class="numeric">@detail.UnitPrice.ToString("c")</td>
+                        <td class="numeric">@detail.Quantity</td>
+                        <td class="numeric">@detail.SubTotal().ToString("c")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="separator"><td colspan="4">&nbsp;</td></tr>
+                <tr>
+                    <td class="numeric label" colspan="2">Subtotal:</td>
+                    <td class="numeric">@order.SubTotal.ToString("c")</td>
+                </tr>
+                <tr>
+                    <td class="numeric label" colspan="2">VAT:</td>
+                    <td class="numeric">@order.Vat.ToString("c")</td>
+                </tr>
+                <tr>
+                    <td class="numeric label" colspan="2">Total:</td>
+                    <td class="numeric">@order.Total().ToString("c")</td>
+                </tr>
+            </tfoot>
+        </table>
+    </article>
+    
+    <article class="addresses form">
+        <div class="invoice-address">
+            <h2>Invoice Address</h2>
+            <ul class="address-fields">
+                <li>@billingAddress.Name.Value</li>
+                <li>@billingAddress.AddressLine1.Value</li>
+                <li>@billingAddress.City.Value</li>
+                <li>@billingAddress.Country.Value</li>
+            </ul>
+        </div>
+    </article>
+</div>
